@@ -273,7 +273,7 @@ async def test_replace_allows_file_containing_real_replacement_character(
 ):
     """U+FFFD stored in the file is legitimate content, not a failed decode."""
     file_path = temp_work_dir / "fffd.txt"
-    original_content = "alpha\nbeta � gamma\ndelta\n"
+    original_content = "alpha\nbeta \ufffd gamma\ndelta\n"
     await file_path.write_text(original_content)
 
     result = await str_replace_file_tool(
@@ -281,7 +281,7 @@ async def test_replace_allows_file_containing_real_replacement_character(
     )
 
     assert not result.is_error
-    assert await file_path.read_text() == "ALPHA\nbeta � gamma\ndelta\n"
+    assert await file_path.read_text() == "ALPHA\nbeta \ufffd gamma\ndelta\n"
 
 
 async def test_replace_allows_crlf_file(
